@@ -292,7 +292,7 @@ function WebDKP_MouseoverBidStart()
 		local i,n,_,r,l = GetLootSlotInfo(slotID);
 		local link = GetLootSlotLink(slotID);
 		local mQ=GetLootThreshold(); 
-		if     i~=nil then 
+		if     i~=nil and r>=mQ then 
 			SendChatMessage("?startbid "..link, "WHISPER", nil, GetUnitName("PLAYER"))
 		end
 	end

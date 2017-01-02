@@ -39,13 +39,13 @@ NEW FEATURES
   (Whispers are hidden from you, so you dont' get bogged down in info)
 
   Commands that you can be whispered:
-  !help - sends them a list of commands
-  !dkp  - sends the person who whispered you their current dkp
-  !list - Lists the dkp of everyone in your current group
-  !listall - Lists the dkp of everyone in your dkp table
+  ?help - sends them a list of commands
+  ?dkp  - sends the person who whispered you their current dkp
+  ?list - Lists the dkp of everyone in your current group
+  ?listall - Lists the dkp of everyone in your dkp table
 
   The two list commands can have class names append to them to limit them to certain classes. 
   For example:
-  !list hunter           - Shows the dkp of all the hunters in the current group
-  !listall hunter rogue  - Shows the dkp of all the hunters and rogues in the guild
+  ?list hunter           - Shows the dkp of all the hunters in the current group
+  ?listall hunter rogue  - Shows the dkp of all the hunters and rogues in the guild
 

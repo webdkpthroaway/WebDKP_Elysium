@@ -48,4 +48,15 @@ NEW FEATURES
   For example:
   ?list hunter           - Shows the dkp of all the hunters in the current group
   ?listall hunter rogue  - Shows the dkp of all the hunters and rogues in the guild
+  
+  
+  
+~~~~~~~~~~~~~~~~~~~~~~
+EXTRA ELYSIUM STUFF
+~~~~~~~~~~~~~~~~~~~~~~
+
+- Slashed most of the whisper functionality because of the agressive spam mute policy present.
+- Added the WebDKP_MouseoverBidStart function for starting an auction by hovering over an item in the loot frame.
+- Added the WebDKP_ApplyGlobalDecay function for applying percentage based decay to everyone's DKP, passed as an argument.
+  For example invoke WebDKP_ApplyGlobalDecay(0.9) to reduce everyone's DKP by 10%. Use with caution.
 

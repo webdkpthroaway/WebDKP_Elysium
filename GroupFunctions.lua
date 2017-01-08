@@ -98,20 +98,27 @@ end
 -- ================================
 -- Global decay function for the current DKP table.
 -- Applies percentage based DKP decay to all entries in the table.
+-- Using ceil so sub 10 dkp entries eventually dissipate to 0.
 -- ================================
 
 function WebDKP_ApplyGlobalDecay(rate)
 
+	local player = {};
+
 	if rate>1 or rate<=0 then
-		WebDKP_Print("Bad decay rate. Rate should be within [0,1].");
+		WebDKP_Print("Bad decay rate. Rate should be within [0,1]. Use 0.1 to apply a 10% reduction for example.");
 		return;
 	end
-		
+	
 	local tableid = WebDKP_GetTableid();
 	
 	for k, v in pairs(WebDKP_DkpTable) do
-		if ( type(v) == "table" and v["dkp_"..tableid]~=nil) then
-			v["dkp_"..tableid] = floor(v["dkp_"..tableid]*(1 - rate));
+		if ( type(v) == "table" and v["dkp_"..tableid] >= 1) then
+			player[0] = {
+					["name"] = k,
+					["class"] = v["class"],
+				};
+			WebDKP_AddDKP((ceil(v["dkp_"..tableid]*rate)*(-1)), k.." decay", "false", player)	
 		end	
 		
 	end

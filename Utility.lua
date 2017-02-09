@@ -297,3 +297,25 @@ function WebDKP_MouseoverBidStart()
 		end
 	end
 end
+
+-- ================================
+-- Mousing over an item in the loot window and 
+-- invoking MasterlootItem, while being the master looter
+-- will award the item to the player, provided it is below epic quality
+-- Useful for BWL sands, lava cores etc
+-- ================================
+
+function MasterlootItem()
+	for ci = 1, GetNumRaidMembers() do
+		if (GetMasterLootCandidate(ci) == UnitName("player")) then
+			local f=GetMouseFocus():GetName(); 
+				if string.sub(f,1,10)=="LootButton" then 
+					local slotID = GetMouseFocus():GetID();
+					local i,n,_,r,l = GetLootSlotInfo(slotID);
+					if r<=3 then
+						GiveMasterLoot(slotID, ci);
+					end
+				end
+		end
+	end
+end

@@ -1,4 +1,4 @@
-## Interface: 20000
+## Interface: 11200
 ## Title: WebDKP
 ## Notes: An addon that allows you to easily record DKP for guilds in game. 
 ## Author: ZeddZorandor

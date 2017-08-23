@@ -156,8 +156,12 @@ function WebDKP_OnEnable()
 	-- place a hook on the chat frame so we can filter out our whispers
 	WebDKP_Register_WhisperHook();
 	
-	-- place a hook on item shift+clicks so we can get item details
-	hooksecurefunc("SetItemRef",WebDKP_ItemChatClick);
+	--hooksecurefunc("SetItemRef",WebDKP_ItemChatClick);
+	if ( SetItemRef ~= WebDKP_ItemChatClick ) then
+		-- place a hook on item shift+clicks so we can get item details
+		WebDKP_ItemChatClick_Original = SetItemRef;
+		SetItemRef = WebDKP_ItemChatClick;
+	end
 end
 
 -- ================================
@@ -428,6 +432,9 @@ end
 -- ================================
 function WebDKP_HandleMouseOver()
 	local playerName = getglobal(this:GetName().."Name"):GetText();
+	if ( not playerName ) then
+		return;
+	end
 	if( not WebDKP_DkpTable[playerName]["Selected"] ) then
 		getglobal(this:GetName() .. "Background"):SetVertexColor(0.2, 0.2, 0.7, 0.5);
 	end
@@ -440,6 +447,9 @@ end
 -- ================================
 function WebDKP_HandleMouseLeave()
 	local playerName = getglobal(this:GetName().."Name"):GetText();
+	if ( not playerName ) then
+		return;
+	end
 	if( not WebDKP_DkpTable[playerName]["Selected"] ) then
 		getglobal(this:GetName() .. "Background"):SetVertexColor(0, 0, 0, 0);
 	end
@@ -763,7 +773,6 @@ end
 -- Helper method. Called whenever a player clicks on shift click
 -- ================================
 function WebDKP_ItemChatClick(link, text, button)
-	
 	-- do a search for 'player'. If it can be found... this is a player link, not an item link. It can be ignored
 	local idx = strfind(text, "player");
 	
@@ -777,4 +786,5 @@ function WebDKP_ItemChatClick(link, text, button)
 			WebDKP_AwardItem_FrameItemName:SetText(itemName);
 		end
 	end
+	WebDKP_ItemChatClick_Original(link, text, button);
 end

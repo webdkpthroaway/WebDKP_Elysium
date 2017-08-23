@@ -4,7 +4,9 @@
 -- This file contains methods related to awarding/deducting DKP and 
 -- items. It also contains methods for appending this data to the log file. 
 ------------------------------------------------------------------------
-
+local GetNumGuildMembers = GetNumGuildMembers;
+local GetGuildRosterInfo = GetGuildRosterInfo;
+local GuildRosterSetOfficerNote = GuildRosterSetOfficerNote;
 
 -- ================================
 -- Called when user clicks on the 'award item' box. 
@@ -130,6 +132,16 @@ function WebDKP_AddDKP(points, reason, forItem, players)
 			WebDKP_Log[reason.." "..date]["awarded"][name]["name"]=name;
 			WebDKP_Log[reason.." "..date]["awarded"][name]["guild"]=guild;
 			WebDKP_Log[reason.." "..date]["awarded"][name]["class"]=class;
+			local ngm = GetNumGuildMembers();
+			for i=1, ngm do
+				n, _, _, _, _, _, _, officernote, _, _, _ = GetGuildRosterInfo(i);
+				if (strlower(n) == strlower(name)) then
+					local current_dkp = tonumber(officernote) or 0;
+					current_dkp = current_dkp + tonumber(points) or 0;
+					GuildRosterSetOfficerNote(i, current_dkp);
+					break;
+				end
+			end
 			
 			-- If awarding an item, only 1 person should be recorded as having recieved it
 			if ( forItem == "true" ) then

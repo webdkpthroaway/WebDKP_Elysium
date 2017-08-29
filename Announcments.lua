@@ -79,34 +79,11 @@ end
 -- ================================
 function WebDKP_AnnounceAward(dkp, reason)
 	local tellLocation = WebDKP_GetTellLocation();
-	local allGroupSelected = WebDKP_AllGroupSelected();
-
 	
-	if ( allGroupSelected == true ) then
-	
-		-- Announce the award
-		local toSay =	string.gsub(WebDKP_DkpAwardAll, "$dkp", dkp);
-		toSay =	string.gsub(toSay, "$reason", reason);
-		WebDKP_SendAnnouncement(toSay,tellLocation);
-	
-	else
-		
-		-- Announce the award
-	
-		local toSay =	string.gsub(WebDKP_DkpAwardSome, "$dkp", dkp);
-		toSay =	string.gsub(toSay, "$reason", reason);
-		WebDKP_SendAnnouncement(toSay,tellLocation);
-		
-		-- now increment through the selected players and announce them
-	
-		for k, v in pairs(WebDKP_DkpTable) do
-			if ( type(v) == "table" ) then
-				if( v["Selected"] ) then
-					WebDKP_SendAnnouncement(k,tellLocation);
-				end
-			end
-		end
-	end
+	-- Announce the award
+	local toSay =	string.gsub(WebDKP_DkpAwardAll, "$dkp", dkp);
+	toSay =	string.gsub(toSay, "$reason", reason);
+	WebDKP_SendAnnouncement(toSay,tellLocation);
 end
 
 -- ================================

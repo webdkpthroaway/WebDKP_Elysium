@@ -132,6 +132,7 @@ function WebDKP_OnLoad()
 	this:RegisterEvent("CHAT_MSG_RAID_LEADER");
 	this:RegisterEvent("CHAT_MSG_RAID_WARNING");
 	this:RegisterEvent("ADDON_ACTION_FORBIDDEN");
+	this:RegisterEvent("UPDATE_MOUSEOVER_UNIT");
 	
 	WebDKP_OnEnable();
 	
@@ -181,6 +182,8 @@ function WebDKP_OnEvent()
 		WebDKP_ADDON_LOADED();
 	elseif(event=="CHAT_MSG_LOOT") then
 		WebDKP_Loot_Taken();
+	elseif(event=="UPDATE_MOUSEOVER_UNIT") then
+		WebDKP_MouseoverBidStart();
 	elseif(event=="ADDON_ACTION_FORBIDDEN") then
 		WebDKP_Print(arg1.."  "..arg2);
 	end

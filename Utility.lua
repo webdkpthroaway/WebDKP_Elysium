@@ -284,9 +284,11 @@ end
 -- Starts a bidding auction for ItemLink corresponding 
 -- to the item the mouse is over in the loot frame
 -- ================================
-
 function WebDKP_MouseoverBidStart()
-	local f=GetMouseFocus():GetName(); 
+	local f=GetMouseFocus():GetName();
+	if (f == nil) then
+		return;
+	end
 	if string.sub(f,1,10)=="LootButton" then 
 		local slotID = GetMouseFocus():GetID();
 		local i,n,_,r,l = GetLootSlotInfo(slotID);
@@ -304,7 +306,6 @@ end
 -- will award the item to the player, provided it is below epic quality
 -- Useful for BWL sands, lava cores etc
 -- ================================
-
 function MasterlootItem()
 	for ci = 1, GetNumRaidMembers() do
 		if (GetMasterLootCandidate(ci) == UnitName("player")) then

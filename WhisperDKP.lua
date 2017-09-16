@@ -38,7 +38,7 @@ function WebDKP_WhisperDKP_Event()
 			
 			if ( WebDKP_DkpTable[name] == nil ) then
 				-- not in our system, send them message
-				--WebDKP_SendWhisper(name,"You have no DKP history"); 
+				WebDKP_SendWhisper(name,"You have no DKP history"); 
 			else
 				-- they are here, get them their dkp
 				local dkp = WebDKP_DkpTable[name]["dkp_"..tableid];
@@ -49,7 +49,7 @@ function WebDKP_WhisperDKP_Event()
 				if(dkp == 0 ) then
 					tier = 0;
 				end
-				--WebDKP_SendWhisper(name,"Current DKP - "..dkp); 
+				WebDKP_SendWhisper(name,"Current DKP - "..dkp); 
 				--WebDKP_SendWhisper(name,"Tier - "..tier); 
 			end	
 		elseif(string.find(string.lower(trigger), "?listall")==1 ) then -- THEY WANT _ALL_ THE DKP OF EVERYONE
@@ -65,8 +65,7 @@ function WebDKP_WhisperDKP_Event()
 			--WebDKP_SendWhisper(name,"==============================");
 			WebDKP_WhisperSortedList(name,true,filter);
 		elseif(trigger == "?help" ) then		-- THEY WANT HELP / LIST OF COMMANDS
-			--WebDKP_SendWhisper(name,"Available Commands:"); 
-			--WebDKP_SendWhisper(name,"?dkp - Get your current dkp");
+			WebDKP_SendWhisper(name,"Available Commands: ?dkp - Get your current dkp. ?bid # - Bid on a currently bidding item");
 			--WebDKP_SendWhisper(name,"?list - List dkp of group");
 			--WebDKP_SendWhisper(name,"?listall - List dkp of guild (BIG)");   
 			--WebDKP_SendWhisper(name,"?help - This menu"); 

@@ -132,6 +132,7 @@ function WebDKP_OnLoad()
 	this:RegisterEvent("CHAT_MSG_RAID_LEADER");
 	this:RegisterEvent("CHAT_MSG_RAID_WARNING");
 	this:RegisterEvent("ADDON_ACTION_FORBIDDEN");
+	this:RegisterEvent("UPDATE_MOUSEOVER_UNIT");
 	
 	WebDKP_OnEnable();
 	
@@ -156,8 +157,12 @@ function WebDKP_OnEnable()
 	-- place a hook on the chat frame so we can filter out our whispers
 	WebDKP_Register_WhisperHook();
 	
-	-- place a hook on item shift+clicks so we can get item details
-	hooksecurefunc("SetItemRef",WebDKP_ItemChatClick);
+	--hooksecurefunc("SetItemRef",WebDKP_ItemChatClick);
+	if ( SetItemRef ~= WebDKP_ItemChatClick ) then
+		-- place a hook on item shift+clicks so we can get item details
+		WebDKP_ItemChatClick_Original = SetItemRef;
+		SetItemRef = WebDKP_ItemChatClick;
+	end
 end
 
 -- ================================
@@ -177,6 +182,8 @@ function WebDKP_OnEvent()
 		WebDKP_ADDON_LOADED();
 	elseif(event=="CHAT_MSG_LOOT") then
 		WebDKP_Loot_Taken();
+	elseif(event=="UPDATE_MOUSEOVER_UNIT") then
+		WebDKP_MouseoverBidStart();
 	elseif(event=="ADDON_ACTION_FORBIDDEN") then
 		WebDKP_Print(arg1.."  "..arg2);
 	end
@@ -428,6 +435,9 @@ end
 -- ================================
 function WebDKP_HandleMouseOver()
 	local playerName = getglobal(this:GetName().."Name"):GetText();
+	if ( not playerName ) then
+		return;
+	end
 	if( not WebDKP_DkpTable[playerName]["Selected"] ) then
 		getglobal(this:GetName() .. "Background"):SetVertexColor(0.2, 0.2, 0.7, 0.5);
 	end
@@ -440,6 +450,9 @@ end
 -- ================================
 function WebDKP_HandleMouseLeave()
 	local playerName = getglobal(this:GetName().."Name"):GetText();
+	if ( not playerName ) then
+		return;
+	end
 	if( not WebDKP_DkpTable[playerName]["Selected"] ) then
 		getglobal(this:GetName() .. "Background"):SetVertexColor(0, 0, 0, 0);
 	end
@@ -727,7 +740,6 @@ function WebDKP_OnUpdate(elapsed)
 	end
 end
 
-
 -- ================================
 -- Initializes the minimap drop down
 -- ================================
@@ -758,12 +770,10 @@ function WebDKP_Add_MinimapDropDownItem(text, eventHandler)
 	UIDropDownMenu_AddButton(info);
 end
 
-
 -- ================================
 -- Helper method. Called whenever a player clicks on shift click
 -- ================================
 function WebDKP_ItemChatClick(link, text, button)
-	
 	-- do a search for 'player'. If it can be found... this is a player link, not an item link. It can be ignored
 	local idx = strfind(text, "player");
 	
@@ -773,8 +783,9 @@ function WebDKP_ItemChatClick(link, text, button)
 		
 		-- put the item text into the award editbox as long as the table frame is visible
 		if ( IsShiftKeyDown()) then
-			local _,itemName,_ = WebDKP_GetItemInfo(link); 
-			WebDKP_AwardItem_FrameItemName:SetText(itemName);
+			local _,itemName,_ = WebDKP_GetItemInfo(link);
+			WebDKP_AwardItem_FrameItemName:SetText(link);
 		end
 	end
+	WebDKP_ItemChatClick_Original(link, text, button);
 end

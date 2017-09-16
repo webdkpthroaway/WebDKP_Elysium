@@ -61,13 +61,14 @@ function WebDKP_Loot_Taken()
 		end
 	end
 	if ( sLink and sPlayer ) then
-		local sRarity, sName, sItem = WebDKP_GetItemInfo(sLink);
+		local _, itemId, _ = strsplit(":", sLink, 3);
+		local sRarity, sName, sItem = WebDKP_GetItemInfo(itemId);
 		local rarity = WebDKP_RarityTable[sRarity];
 		local cost = nil; 
 		if( rarity < WebDKP_Options["AutofillThreshold"] ) then
 			return;
 		end
-		WebDKP_AwardItem_FrameItemName:SetText(sName);
+		WebDKP_AwardItem_FrameItemName:SetText(sLink);
 		-- see if we can determine the cost while we are at it...
 		if ( WebDKP_Loot ~= nil ) then
 			cost = WebDKP_Loot[sName];

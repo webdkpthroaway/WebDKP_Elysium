@@ -740,7 +740,6 @@ function WebDKP_OnUpdate(elapsed)
 	end
 end
 
-
 -- ================================
 -- Initializes the minimap drop down
 -- ================================
@@ -771,7 +770,6 @@ function WebDKP_Add_MinimapDropDownItem(text, eventHandler)
 	UIDropDownMenu_AddButton(info);
 end
 
-
 -- ================================
 -- Helper method. Called whenever a player clicks on shift click
 -- ================================
@@ -785,8 +783,8 @@ function WebDKP_ItemChatClick(link, text, button)
 		
 		-- put the item text into the award editbox as long as the table frame is visible
 		if ( IsShiftKeyDown()) then
-			local _,itemName,_ = WebDKP_GetItemInfo(link); 
-			WebDKP_AwardItem_FrameItemName:SetText(itemName);
+			local _,itemName,_ = WebDKP_GetItemInfo(link);
+			WebDKP_AwardItem_FrameItemName:SetText(link);
 		end
 	end
 	WebDKP_ItemChatClick_Original(link, text, button);

@@ -55,12 +55,11 @@ function WebDKP_AnnounceAwardItem(cost, item, player)
 	-- (convert the item to a link)
 	local _,_,link = WebDKP_GetItemInfo(item);
 	local toSay =	string.gsub(WebDKP_ItemAward, "$player", player);
-	toSay =	string.gsub(toSay, "$item", link);
+	toSay =	string.gsub(toSay, "$item", item);
 	toSay =	string.gsub(toSay, "$cost", cost);
-	
-	WebDKP_SendAnnouncement(toSay,tellLocation);
-	
-	
+
+	WebDKP_SendAnnouncement(toSay, tellLocation);
+
 	-- If using Zero Sum announce the zero sum award
 	if ( WebDKP_WebOptions["ZeroSumEnabled"]==1) then
 		local numPlayers = WebDKP_GetTableSize(WebDKP_PlayersInGroup);
@@ -71,7 +70,6 @@ function WebDKP_AnnounceAwardItem(cost, item, player)
 			WebDKP_SendAnnouncement(toSay, tellLocation);
 		end
 	end
-
 end
 
 -- ================================
@@ -79,11 +77,35 @@ end
 -- ================================
 function WebDKP_AnnounceAward(dkp, reason)
 	local tellLocation = WebDKP_GetTellLocation();
-	
-	-- Announce the award
-	local toSay =	string.gsub(WebDKP_DkpAwardAll, "$dkp", dkp);
-	toSay =	string.gsub(toSay, "$reason", reason);
-	WebDKP_SendAnnouncement(toSay,tellLocation);
+	local allGroupSelected = WebDKP_AllGroupSelected();
+
+	if ( allGroupSelected == true ) then
+		-- Announce the award
+		local toSay = string.gsub(WebDKP_DkpAwardAll, "$dkp", dkp);
+		toSay = string.gsub(toSay, "$reason", reason);
+		WebDKP_SendAnnouncement(toSay, tellLocation);
+	else
+		-- Announce the award
+		local toSay = string.gsub(WebDKP_DkpAwardSome, "$dkp", dkp);
+		toSay = string.gsub(toSay, "$reason", reason);
+
+		-- increment through the selected players and announce them
+		local cnt = 0
+		local msg = ""
+		for k, v in pairs(WebDKP_DkpTable) do
+			if ( type(v) == "table" ) then
+				if ( v["Selected"] ) then
+					cnt = cnt + 1;
+					msg = msg.. k  .. ",";
+				end
+			end
+		end
+		toSay = string.gsub(toSay, "$cnt", cnt);
+		WebDKP_SendAnnouncement(toSay, tellLocation);
+		if ( cnt > 0 ) then
+			WebDKP_SendAnnouncement(msg, tellLocation);
+		end
+	end
 end
 
 -- ================================
